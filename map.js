@@ -1,4 +1,4 @@
-var map = L.map("map").setView([40.02, -75.3], 13);
+var map = L.map("map").setView([40.02, -75.3], 14);
 
 const tileLayer = (id) => {
   return L.tileLayer(
@@ -77,37 +77,55 @@ var lts = L.geoJSON(lts, {
   return popupText;
 });
 
-map.on("layeradd", () => {
-  mlg.bringToFront();
+map.on("overlayadd", (e) => {
+  console.log(e);
+  if (e.name === "Level of Traffic Stress") {
+    mlg.bringToFront();
+
+    map.removeControl(mapLegend);
+    mapLegend = addLegend(
+      ["Main Line Greenway", "LTS 1", "LTS 2", "LTS 3", "LTS 4", "Path"],
+      ["#6BA1F8", "#348939", "#FDBF02", "#FE7E03", "#9B1D1E", "#348939"]
+    );
+  }
 });
 
-let legend = new L.Control();
+map.on("overlayremove", () => {
+  map.removeControl(mapLegend);
+  mapLegend = addLegend(["Main Line Greenway"], ["#6BA1F8"]);
+});
 
-legend.options.position = "bottomleft";
+const addLegend = (types, colors) => {
+  let legend = new L.Control();
 
-legend.onAdd = function (map) {
-  let div = L.DomUtil.create("div", "info legend"),
-    types = ["paved trail", "paved road", "dirt road", "dirt trail"],
-    colors = ["#454545", "#000000", "#FF0000", "#800000"];
+  legend.options.position = "bottomleft";
 
-  // loop through our density intervals and generate a label with a colored square for each interval
-  for (let i = 0; i < types.length; i++) {
-    div.innerHTML +=
-      '<i style="background:' +
-      colors[i] +
-      '">&nbsp&nbsp&nbsp&nbsp</i> ' +
-      types[i] +
-      "<br>";
-  }
-  return div;
+  legend.onAdd = function (map) {
+    let div = L.DomUtil.create("div", "info legend");
+
+    for (let i = 0; i < types.length; i++) {
+      div.innerHTML +=
+        '<i style="background:' +
+        colors[i] +
+        '">&nbsp&nbsp&nbsp&nbsp</i> ' +
+        types[i] +
+        "<br>";
+    }
+    div.style = "background-color: lightgrey; padding:2px; border-radius:2px;";
+    return div;
+  };
+
+  legend.addTo(map);
+
+  return legend;
 };
 
-legend.addTo(map);
+let mapLegend = addLegend(["Main Line Greenway"], ["#6BA1F8"]);
 
 var baseMaps = {
   Streets: streets,
   Imagery: satellite,
-  Navigatoon: navigation,
+  Navigaton: navigation,
 };
 
 var overlayMaps = {
