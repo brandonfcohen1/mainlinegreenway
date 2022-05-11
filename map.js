@@ -1,4 +1,4 @@
-var map = L.map("map").setView([40.02, -75.3], 14);
+var map = L.map("map").setView([40.02, -75.3], 13);
 
 const tileLayer = (id) => {
   return L.tileLayer(
