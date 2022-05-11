@@ -78,13 +78,19 @@ var lts = L.geoJSON(lts, {
 });
 
 map.on("overlayadd", (e) => {
-  console.log(e);
   if (e.name === "Level of Traffic Stress") {
     mlg.bringToFront();
 
     map.removeControl(mapLegend);
     mapLegend = addLegend(
-      ["Main Line Greenway", "LTS 1", "LTS 2", "LTS 3", "LTS 4", "Path"],
+      [
+        "Main Line Greenway",
+        "LTS 1: Relaxing",
+        "LTS 2: For Everyone",
+        "LTS 3: For Confident Cyclists",
+        "LTS 4: Uncomfortable",
+        "Path",
+      ],
       ["#6BA1F8", "#348939", "#FDBF02", "#FE7E03", "#9B1D1E", "#348939"]
     );
   }
