@@ -144,7 +144,8 @@ map.on("overlayadd", (e) => {
 
 map.on("overlayremove", () => {
   map.removeControl(mapLegend);
-  mapLegend = addLegend(["Main Line Greenway"], ["#6BA1F8"]);
+  const legendArray = makeLegendArray(legendItems);
+  mapLegend = addLegend(legendArray[0], legendArray[1]);
   // rebuild mapLegend with the values in MLGMapping
 });
 
